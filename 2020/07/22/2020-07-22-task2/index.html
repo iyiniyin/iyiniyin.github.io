@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>自然语言处理实践（新闻文本分类）Task2 赛题理解 | Iyin's blog</title><meta name="description" content="自然语言处理实践（新闻文本分类）"><meta name="keywords" content="NLP"><meta name="author" content="Iyin,yinwein@foxmail.com"><meta name="copyright" content="Iyin"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/plant.png"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="自然语言处理实践（新闻文本分类）Task2 赛题理解"><meta name="twitter:description" content="自然语言处理实践（新闻文本分类）"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta property="og:type" content="article"><meta property="og:title" content="自然语言处理实践（新闻文本分类）Task2 赛题理解"><meta property="og:url" content="http://yoursite.com/2020/07/22/2020-07-22-task2/"><meta property="og:site_name" content="Iyin's blog"><meta property="og:description" content="自然语言处理实践（新闻文本分类）"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://yoursite.com/2020/07/22/2020-07-22-task2/"><link rel="next" title="自然语言处理实践（新闻文本分类）Task1 赛题理解" href="http://yoursite.com/2020/07/21/2020-07-21-task1/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: true,
+  fancybox: false,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">Iyin's blog</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://ae01.alicdn.com/kf/Hb280d3c31450463cb3dc638bf33ca871f.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">5</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">3</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#任务安排"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">任务安排</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数据导入"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">数据导入</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数据分析"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">数据分析</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#x-新闻文本长度，字符分布情况"><span class="toc_mobile_items-number">3.1.</span> <span class="toc_mobile_items-text">x:新闻文本长度，字符分布情况</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#结论："><span class="toc_mobile_items-number">3.1.1.</span> <span class="toc_mobile_items-text">结论：</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#y-赛题数据的类别分布"><span class="toc_mobile_items-number">3.2.</span> <span class="toc_mobile_items-text">y:赛题数据的类别分布</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#字符统计"><span class="toc_mobile_items-number">3.3.</span> <span class="toc_mobile_items-text">字符统计</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#任务安排"><span class="toc-number">1.</span> <span class="toc-text">任务安排</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据导入"><span class="toc-number">2.</span> <span class="toc-text">数据导入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据分析"><span class="toc-number">3.</span> <span class="toc-text">数据分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#x-新闻文本长度，字符分布情况"><span class="toc-number">3.1.</span> <span class="toc-text">x:新闻文本长度，字符分布情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结论："><span class="toc-number">3.1.1.</span> <span class="toc-text">结论：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#y-赛题数据的类别分布"><span class="toc-number">3.2.</span> <span class="toc-text">y:赛题数据的类别分布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符统计"><span class="toc-number">3.3.</span> <span class="toc-text">字符统计</span></a></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://s2.ax1x.com/2020/02/27/3aTBOx.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">自然语言处理实践（新闻文本分类）Task2 赛题理解</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2020-07-22<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2020-07-22</time><span class="post-meta__separator">|</span><span><i class="fa fa-inbox post-meta__icon fa-fw" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%AB%9E%E8%B5%9B/">竞赛</a></span><div class="post-meta-wordcount"><div class="post-meta-pv-cv"><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><html><head></head><body><h1 id="任务安排"><a href="#任务安排" class="headerlink" title="任务安排"></a>任务安排</h1><ul>
+<li><p><strong>学习目标</strong></p>
+<ul>
+<li>学习使用<code>Pandas</code>读取赛题数据。</li>
+<li>分析赛题数据的分布规律。</li>
+</ul>
+</li>
+<li><p><strong>本章作业</strong></p>
+<ul>
+<li>假设字符3750，字符900和字符648是句子的标点符号，请分析赛题每篇新闻平均由多少个句子构成？</li>
+<li>统计每类新闻中出现次数对多的字符。</li>
+</ul>
+</li>
+</ul>
+<h1 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h1><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">train_df0 = pd.read_csv(<span class="string">'data/train_set.csv'</span>, sep=<span class="string">'\t'</span>, nrows=<span class="number">100</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>读取全部数据</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">train_df = pd.read_csv(<span class="string">'data/train_set.csv'</span>, sep=<span class="string">'\t'</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_df.describe</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">html</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag"><<span class="name">bound</span> <span class="attr">method</span> <span class="attr">NDFrame.describe</span> <span class="attr">of</span>         <span class="attr">label</span>                                               <span class="attr">text</span></span></span><br><span class="line"><span class="tag"><span class="attr">0</span>           <span class="attr">2</span>  <span class="attr">2967</span> <span class="attr">6758</span> <span class="attr">339</span> <span class="attr">2021</span> <span class="attr">1854</span> <span class="attr">3731</span> <span class="attr">4109</span> <span class="attr">3792</span> <span class="attr">4149</span> <span class="attr">15...</span></span></span><br><span class="line"><span class="tag"><span class="attr">1</span>          <span class="attr">11</span>  <span class="attr">4464</span> <span class="attr">486</span> <span class="attr">6352</span> <span class="attr">5619</span> <span class="attr">2465</span> <span class="attr">4802</span> <span class="attr">1452</span> <span class="attr">3137</span> <span class="attr">5778</span> <span class="attr">54...</span></span></span><br><span class="line"><span class="tag"><span class="attr">2</span>           <span class="attr">3</span>  <span class="attr">7346</span> <span class="attr">4068</span> <span class="attr">5074</span> <span class="attr">3747</span> <span class="attr">5681</span> <span class="attr">6093</span> <span class="attr">1777</span> <span class="attr">2226</span> <span class="attr">7354</span> <span class="attr">6...</span></span></span><br><span class="line"><span class="tag"><span class="attr">3</span>           <span class="attr">2</span>  <span class="attr">7159</span> <span class="attr">948</span> <span class="attr">4866</span> <span class="attr">2109</span> <span class="attr">5520</span> <span class="attr">2490</span> <span class="attr">211</span> <span class="attr">3956</span> <span class="attr">5520</span> <span class="attr">549...</span></span></span><br><span class="line"><span class="tag"><span class="attr">4</span>           <span class="attr">3</span>  <span class="attr">3646</span> <span class="attr">3055</span> <span class="attr">3055</span> <span class="attr">2490</span> <span class="attr">4659</span> <span class="attr">6065</span> <span class="attr">3370</span> <span class="attr">5814</span> <span class="attr">2465</span> <span class="attr">5...</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span>       <span class="attr">...</span>                                                <span class="attr">...</span></span></span><br><span class="line"><span class="tag"><span class="attr">199995</span>      <span class="attr">2</span>  <span class="attr">307</span> <span class="attr">4894</span> <span class="attr">7539</span> <span class="attr">4853</span> <span class="attr">5330</span> <span class="attr">648</span> <span class="attr">6038</span> <span class="attr">4409</span> <span class="attr">3764</span> <span class="attr">603...</span></span></span><br><span class="line"><span class="tag"><span class="attr">199996</span>      <span class="attr">2</span>  <span class="attr">3792</span> <span class="attr">2983</span> <span class="attr">355</span> <span class="attr">1070</span> <span class="attr">4464</span> <span class="attr">5050</span> <span class="attr">6298</span> <span class="attr">3782</span> <span class="attr">3130</span> <span class="attr">68...</span></span></span><br><span class="line"><span class="tag"><span class="attr">199997</span>     <span class="attr">11</span>  <span class="attr">6811</span> <span class="attr">1580</span> <span class="attr">7539</span> <span class="attr">1252</span> <span class="attr">1899</span> <span class="attr">5139</span> <span class="attr">1386</span> <span class="attr">3870</span> <span class="attr">4124</span> <span class="attr">1...</span></span></span><br><span class="line"><span class="tag"><span class="attr">199998</span>      <span class="attr">2</span>  <span class="attr">6405</span> <span class="attr">3203</span> <span class="attr">6644</span> <span class="attr">983</span> <span class="attr">794</span> <span class="attr">1913</span> <span class="attr">1678</span> <span class="attr">5736</span> <span class="attr">1397</span> <span class="attr">191...</span></span></span><br><span class="line"><span class="tag"><span class="attr">199999</span>      <span class="attr">3</span>  <span class="attr">4350</span> <span class="attr">3878</span> <span class="attr">3268</span> <span class="attr">1699</span> <span class="attr">6909</span> <span class="attr">5505</span> <span class="attr">2376</span> <span class="attr">2465</span> <span class="attr">6088</span> <span class="attr">2...</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag">[<span class="attr">200000</span> <span class="attr">rows</span> <span class="attr">x</span> <span class="attr">2</span> <span class="attr">columns</span>]></span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>如果内存不足，没法一次性读取20万条数据怎么办？</p>
+<ul>
+<li>可以使用 chunksize 参数，这时候返回的是可迭代的对象 TextFileReader ，而不是 DataFrame ，可以通过迭代TextFileReader 来获取长度为chunksize 的小块DataFrame</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_tfr1 = pd.read_csv(<span class="string">'data/train_set.csv'</span>, sep=<span class="string">'\t'</span>, chunksize=<span class="number">20000</span>)</span><br><span class="line"><span class="comment">#for chunk in train_tfr:</span></span><br><span class="line"><span class="comment">#    do_sometime(chunk) </span></span><br><span class="line"><span class="comment"># 这里的chunk是DataFrame，和下面的操作一样，不过需要额外变量以整合所有分块的统计数据</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>上面是分块读取的，下面介绍的是另一种方法：iterator 参数。这个参数的好处是，如果你只想看看数据，比如前10行，就可以通过这样的方法来查看。同时分批取数据也更加灵活，比如说，我第一次想取100条数据，第二次想取50条。每一次取数据的索引号是接着上一次的索引号的。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_tfr2 = pd.read_csv(<span class="string">'data/train_set.csv'</span>, sep=<span class="string">'\t'</span>, iterator=<span class="literal">True</span>)</span><br><span class="line">train_tfr2.get_chunk(<span class="number">5</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</code></pre><p></style><p></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>2967 6758 339 2021 1854 3731 4109 3792 4149 15...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>11</td>
+      <td>4464 486 6352 5619 2465 4802 1452 3137 5778 54...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>7346 4068 5074 3747 5681 6093 1777 2226 7354 6...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>7159 948 4866 2109 5520 2490 211 3956 5520 549...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>3646 3055 3055 2490 4659 6065 3370 5814 2465 5...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_tfr2.get_chunk(<span class="number">10</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</code></pre><p></style><p></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>9</td>
+      <td>3819 4525 1129 6725 6485 2109 3800 5264 1006 4...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>307 4780 6811 1580 7539 5886 5486 3433 6644 58...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>10</td>
+      <td>26 4270 1866 5977 3523 3764 4464 3659 4853 517...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>12</td>
+      <td>2708 2218 5915 4559 886 1241 4819 314 4261 166...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>3</td>
+      <td>3654 531 1348 29 4553 6722 1474 5099 7541 307 ...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0</td>
+      <td>3659 3659 1903 1866 4326 4744 7239 3479 4261 4...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>7</td>
+      <td>6469 1066 1623 1018 3694 4089 3809 4516 6656 3...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>4</td>
+      <td>3772 4269 3433 6122 2035 4531 465 6565 498 358...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>4630 2210 1641 1854 1641 4543 3017 4409 5430 6...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0</td>
+      <td>1103 6835 3433 2107 5165 7543 3598 5229 1946 2...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h1><h2 id="x-新闻文本长度，字符分布情况"><a href="#x-新闻文本长度，字符分布情况" class="headerlink" title="x:新闻文本长度，字符分布情况"></a>x:新闻文本长度，字符分布情况</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_df[<span class="string">'text_len'</span>] = train_df[<span class="string">'text'</span>].apply(<span class="keyword">lambda</span> x: len(x.split(<span class="string">' '</span>)))</span><br><span class="line">print(train_df[<span class="string">'text_len'</span>].describe())</span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>count    200000.000000
+mean        907.207110
+std         996.029036
+min           2.000000
+25%         374.000000
+50%         676.000000
+75%        1131.000000
+max       57921.000000
+Name: text_len, dtype: float64</code></pre><p>文本长度2-57921不等，平均907</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">%pylab inline</span><br><span class="line"><span class="comment"># bins指定bin(箱子)的个数,也就是总共要画多少条条状图</span></span><br><span class="line"><span class="comment"># 不建议把bins设置得太大，会卡电脑</span></span><br><span class="line">_ = plt.hist(train_df[<span class="string">'text_len'</span>], bins=<span class="number">200</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Text char count'</span>)</span><br><span class="line">plt.title(<span class="string">"Histogram of char count"</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<p><img alt data-src="/2020/07/22/2020-07-22-task2/2020-07-22/output_14_2.png" src="/img/loading.gif" class="lazyload"></p>
+<ul>
+<li>%pylab inline<br>这是使用了 <code>inline</code> 作为 matplotlib 的后端，<br>简单来说，就是简化代码，方便我们用最少的代码来在jupyter上画图。</li>
+<li>pylab是一个魔法函数，其实就是简化了输入。需要在ipython里使用，比如说jupyter，在vscode里需要加上#%%才能够运行。该函数等价于下面的语句：</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pylab, mlab, pyplot</span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> display</span><br><span class="line"><span class="keyword">from</span> IPython.core.pylabtools <span class="keyword">import</span> figsize, getfigs</span><br><span class="line"><span class="keyword">from</span> pylab <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br></pre></td></tr></tbody></table></figure></div>
+
+<h3 id="结论："><a href="#结论：" class="headerlink" title="结论："></a>结论：</h3><ol>
+<li>有超长文本（5万字符以上），但这部分数据很少，所以可以通过截取的方法来进行处理。</li>
+<li>中位数是676个字符，平均数是907个字符；但这是未处理过的文本长度，处理后会进一步缩减；（几百个字符实在太多了，BERT最多才能处理512个字符的长度，所以要经过去停留词、去高频词等方法来减少字符）</li>
+</ol>
+<h2 id="y-赛题数据的类别分布"><a href="#y-赛题数据的类别分布" class="headerlink" title="y:赛题数据的类别分布"></a>y:赛题数据的类别分布</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">train_df[<span class="string">'label'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br><span class="line">plt.title(<span class="string">'News class count'</span>)</span><br><span class="line">plt.xlabel(<span class="string">"category"</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<p><img alt="png" data-src="/2020/07/22/2020-07-22-task2/2020-07-22/output_19_1.png" src="/img/loading.gif" class="lazyload"></p>
+<ul>
+<li>在数据集中标签的对应的关系：{‘科技’: 0, ‘股票’: 1, ‘体育’: 2, ‘娱乐’: 3, ‘时政’: 4, ‘社会’: 5, ‘教育’: 6, ‘财经’: 7, ‘家居’: 8, ‘游戏’: 9, ‘房产’: 10, ‘时尚’: 11, ‘彩票’: 12, ‘星座’: 13} </li>
+<li>数据集分布较为不均匀，第0、1、2类占了大部分，这就很容易对这三类的数据过拟合，而其他类会欠拟合。</li>
+</ul>
+<h2 id="字符统计"><a href="#字符统计" class="headerlink" title="字符统计"></a>字符统计</h2><p>由于文本字符过多，需要进行去停用词、高频词等处理，但是由于比赛数据被匿名处理，无法使用停用词表，可以试图通过统计词频来找出高频词进行分析。</p>
+<ol>
+<li>统计每个字符出现的次数</li>
+<li>统计每类新闻中出现次数最多的字符</li>
+</ol>
+<ul>
+<li>统计词频 方法一 使用Counter</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line">all_lines = <span class="string">' '</span>.join(list(train_df[<span class="string">'text'</span>]))</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">len(all_lines)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">word_count = Counter(all_lines.split(<span class="string">" "</span>))</span><br><span class="line"><span class="comment"># 对上面拼接好的大文本进行分割，然后使用Counter()函数进行统计，获得{字符:字频数}列表</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">word_count = sorted(word_count.items(), key=<span class="keyword">lambda</span> d:d[<span class="number">1</span>], reverse = <span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 对{字符:字频数}列表 按 值 进行排序，也就是按字频数进行排序。</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<ul>
+<li>方法二 直接使用dict 循环</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">temp = all_lines.split(<span class="string">" "</span>)</span><br><span class="line">frequency = {}</span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> temp:</span><br><span class="line">    <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> frequency:</span><br><span class="line">        frequency[word] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        frequency[word] += <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<ul>
+<li>方法三 defaultdict</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">frequency = collections.defaultdict(int)</span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> all_lines.split():</span><br><span class="line">    frequency[word] += <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+
+
+<p>内存溢出 心力交瘁 colab和阿里云都不可 明天再说吧</p>
+</body></html></div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NLP/">NLP    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/2020/07/21/2020-07-21-task1/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>自然语言处理实践（新闻文本分类）Task1 赛题理解</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/07/21/2020-07-21-task1/" title="自然语言处理实践（新闻文本分类）Task1 赛题理解"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-07-21</div><div class="relatedPosts_title">自然语言处理实践（新闻文本分类）Task1 赛题理解</div></div></a></div></div><div class="clear_both"></div></div></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By Iyin</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script id="canvas_nest" color="189,207,69" opacity="0.9" zIndex="-1" count="70" mobile="false" src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/canvas-nest.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
