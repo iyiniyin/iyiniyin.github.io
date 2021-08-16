@@ -1,0 +1,712 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>神经网络 | Iyin's blog</title><meta name="description" content="《Tensorflow深度学习》unit6"><meta name="keywords" content="Deep Learning,Tensorflow"><meta name="author" content="Iyin,yinwein@foxmail.com"><meta name="copyright" content="Iyin"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/plant.png"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="神经网络"><meta name="twitter:description" content="《Tensorflow深度学习》unit6"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta property="og:type" content="article"><meta property="og:title" content="神经网络"><meta property="og:url" content="http://yoursite.com/2020/03/03/2020-03-03-unit6/"><meta property="og:site_name" content="Iyin's blog"><meta property="og:description" content="《Tensorflow深度学习》unit6"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://yoursite.com/2020/03/03/2020-03-03-unit6/"><link rel="prev" title="资金流入流出预测 01-数据探索与分析" href="http://yoursite.com/2020/08/20/2020-08-20-%E8%B5%84%E9%87%91%E6%B5%81%E5%85%A5%E6%B5%81%E5%87%BA%E9%A2%84%E6%B5%8B%EF%BC%88task1%EF%BC%89/"><link rel="next" title="Tensorflow进阶" href="http://yoursite.com/2020/02/27/2020-02-27-unit5/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: true,
+  fancybox: false,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">Iyin's blog</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://ae01.alicdn.com/kf/Hb280d3c31450463cb3dc638bf33ca871f.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">10</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">4</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#热身"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">热身</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#汽车油耗预测实战"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">汽车油耗预测实战</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#导入常用第三方库"><span class="toc_mobile_items-number">2.1.</span> <span class="toc_mobile_items-text">导入常用第三方库</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#下载并加载数据"><span class="toc_mobile_items-number">2.2.</span> <span class="toc_mobile_items-text">下载并加载数据</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#数据预处理"><span class="toc_mobile_items-number">2.3.</span> <span class="toc_mobile_items-text">数据预处理</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#训练集和测试集数据处理"><span class="toc_mobile_items-number">2.4.</span> <span class="toc_mobile_items-text">训练集和测试集数据处理</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#模型训练"><span class="toc_mobile_items-number">2.5.</span> <span class="toc_mobile_items-text">模型训练</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#热身"><span class="toc-number">1.</span> <span class="toc-text">热身</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#汽车油耗预测实战"><span class="toc-number">2.</span> <span class="toc-text">汽车油耗预测实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#导入常用第三方库"><span class="toc-number">2.1.</span> <span class="toc-text">导入常用第三方库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载并加载数据"><span class="toc-number">2.2.</span> <span class="toc-text">下载并加载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据预处理"><span class="toc-number">2.3.</span> <span class="toc-text">数据预处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练集和测试集数据处理"><span class="toc-number">2.4.</span> <span class="toc-text">训练集和测试集数据处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型训练"><span class="toc-number">2.5.</span> <span class="toc-text">模型训练</span></a></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://s2.ax1x.com/2020/02/27/3aTBOx.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">神经网络</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2020-03-03<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2020-03-03</time><span class="post-meta__separator">|</span><span><i class="fa fa-inbox post-meta__icon fa-fw" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span><div class="post-meta-wordcount"><div class="post-meta-pv-cv"><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><html><head></head><body><p>《Tensorflow深度学习》unit6学习记录</p>
+<h1 id="热身"><a href="#热身" class="headerlink" title="热身"></a>热身</h1><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span>  tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span>    tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span>    tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"><span class="keyword">from</span>    tensorflow.keras <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span>  os</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>层方式实现</p>
+<ul>
+<li>方法一：新建各个网络层类，在前向计算时，依次通过各个网络层即可</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">x = tf.random.normal([<span class="number">4</span>,<span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">fc1 = layers.Dense(<span class="number">256</span>, activation=tf.nn.relu) </span><br><span class="line">fc2 = layers.Dense(<span class="number">128</span>, activation=tf.nn.relu) </span><br><span class="line">fc3 = layers.Dense(<span class="number">64</span>, activation=tf.nn.relu) </span><br><span class="line">fc4 = layers.Dense(<span class="number">10</span>, activation=<span class="literal">None</span>) </span><br><span class="line">h1 = fc1(x)</span><br><span class="line">h2 = fc2(h1)</span><br><span class="line">h3 = fc3(h2)</span><br><span class="line">h4 = fc4(h3)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<ul>
+<li>方法二：通过Sequential容器封装成一个网络大类对象，调用大类的前向计算函数一次完成所有层的前向计算。</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers, Sequential</span><br><span class="line"><span class="comment"># 将容器封装成网络类</span></span><br><span class="line">model = Sequential([</span><br><span class="line">    layers.Dense(<span class="number">256</span>, activation=tf.nn.relu) ,</span><br><span class="line">    layers.Dense(<span class="number">128</span>, activation=tf.nn.relu) ,</span><br><span class="line">    layers.Dense(<span class="number">64</span>, activation=tf.nn.relu) ,</span><br><span class="line">    layers.Dense(<span class="number">10</span>, activation=<span class="literal">None</span>) ,</span><br><span class="line">])</span><br><span class="line">out = model(x)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">#%% 计算总参数量</span></span><br><span class="line"><span class="number">256</span>*<span class="number">784</span>+<span class="number">256</span>+<span class="number">128</span>*<span class="number">256</span>+<span class="number">128</span>+<span class="number">64</span>*<span class="number">128</span>+<span class="number">64</span>+<span class="number">10</span>*<span class="number">64</span>+<span class="number">10</span></span><br><span class="line"><span class="comment">#%% 设置只显示warning和error</span></span><br><span class="line">os.environ[<span class="string">'TF_CPP_MIN_LOG_LEVEL'</span>] = <span class="string">'2'</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>处理x,y</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># x: [60k, 28, 28],</span></span><br><span class="line"><span class="comment"># y: [60k]</span></span><br><span class="line">(x, y), _ = datasets.mnist.load_data()</span><br><span class="line">x.shape,y.shape</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<pre><code>((60000, 28, 28), (60000,))</code></pre><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># x: [0~255] => [0~1.]，将数据转化为张量</span></span><br><span class="line"><span class="comment"># y: 0 - 9</span></span><br><span class="line">x = tf.convert_to_tensor(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">y = tf.convert_to_tensor(y, dtype=tf.int32)</span><br><span class="line">print(x.shape, y.shape, x.dtype, y.dtype)</span><br><span class="line">print(tf.reduce_min(x), tf.reduce_max(x))</span><br><span class="line">print(tf.reduce_min(y), tf.reduce_max(y))</span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>(60000, 28, 28) (60000,) <dtype: 'float32'> <dtype: 'int32'>
+tf.Tensor(0.0, shape=(), dtype=float32) tf.Tensor(1.0, shape=(), dtype=float32)
+tf.Tensor(0, shape=(), dtype=int32) tf.Tensor(9, shape=(), dtype=int32)</dtype:></dtype:></code></pre><p>设置batch、iter等值，划分样本集，得到train_db, train_iter</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 批处理，每批计算128个样本，batch_size = 128</span></span><br><span class="line"><span class="comment"># 该方法作用：切分传入Tensor的第一个维度，生成相应的dataset，每个维度为传入矩阵的一行</span></span><br><span class="line">train_db = tf.data.Dataset.from_tensor_slices((x,y)).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># iter() 函数用来生成迭代器</span></span><br><span class="line"><span class="comment">#train_iter = iter(train_db)</span></span><br><span class="line"><span class="comment"># 通过iter()函数获取这些可迭代对象的迭代器。然后我们可以对获取到的迭代器不断使用next()函数来获取下一条数据</span></span><br><span class="line"><span class="comment">#sample = next(train_iter)</span></span><br><span class="line"><span class="comment"># sample为最后一个值</span></span><br><span class="line"><span class="comment">#print('batch:', sample[0].shape, sample[1].shape)</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>初始化参数</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># [b, 784] => [b, 256] => [b, 128] => [b, 10]</span></span><br><span class="line"><span class="comment"># [dim_in, dim_out], [dim_out]</span></span><br><span class="line"><span class="comment"># 隐藏层1张量</span></span><br><span class="line">w1 = tf.Variable(tf.random.truncated_normal([<span class="number">784</span>, <span class="number">256</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b1 = tf.Variable(tf.zeros([<span class="number">256</span>]))</span><br><span class="line"><span class="comment"># 隐藏层2张量</span></span><br><span class="line">w2 = tf.Variable(tf.random.truncated_normal([<span class="number">256</span>, <span class="number">128</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b2 = tf.Variable(tf.zeros([<span class="number">128</span>]))</span><br><span class="line"><span class="comment"># 隐藏层3张量</span></span><br><span class="line">w3 = tf.Variable(tf.random.truncated_normal([<span class="number">128</span>, <span class="number">64</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b3 = tf.Variable(tf.zeros([<span class="number">64</span>]))</span><br><span class="line"><span class="comment"># 输出层张量</span></span><br><span class="line">w4 = tf.Variable(tf.random.truncated_normal([<span class="number">64</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b4 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>MSE计算误差，梯度下降法更新参数</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 学习率</span></span><br><span class="line">lr = <span class="number">1e-3</span></span><br><span class="line">print(lr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">10</span>): <span class="comment"># iterate db for 10，迭代10次，1次为1 epoch</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> enumerate(train_db): <span class="comment"># 对于每批量的样本，批量计算</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># x:[128, 28, 28]</span></span><br><span class="line">        <span class="comment"># y: [128]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># [b, 28, 28] => [b, 28*28]</span></span><br><span class="line">        x = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape: <span class="comment"># tf.Variable</span></span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">            <span class="comment"># x: [b, 28*28]</span></span><br><span class="line">            <span class="comment">#  隐藏层1前向计算，[b, 28*28] => [b, 256]</span></span><br><span class="line">            h1 = x@w1 + tf.broadcast_to(b1, [x.shape[<span class="number">0</span>], <span class="number">256</span>])</span><br><span class="line">            h1 = tf.nn.relu(h1)</span><br><span class="line">            <span class="comment"># 隐藏层2前向计算，[b, 256] => [b, 128]</span></span><br><span class="line">            h2 = h1@w2 + b2</span><br><span class="line">            h2 = tf.nn.relu(h2)</span><br><span class="line">            <span class="comment"># 隐藏层3前向计算，[b, 128] => [b, 64] </span></span><br><span class="line">            h3 = h2@w3 + b3</span><br><span class="line">            h3 = tf.nn.relu(h3)</span><br><span class="line">            <span class="comment"># 输出层前向计算，[b, 64] => [b, 10] </span></span><br><span class="line">            h4 = h3@w4 + b4</span><br><span class="line">            out = h4</span><br><span class="line"></span><br><span class="line">            <span class="comment"># compute loss</span></span><br><span class="line">            <span class="comment"># out: [b, 10]</span></span><br><span class="line">            <span class="comment"># y: [b] => [b, 10]</span></span><br><span class="line">            y_onehot = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># mse = mean(sum(y-out)^2)</span></span><br><span class="line">            <span class="comment"># [b, 10] 每个样本的误差</span></span><br><span class="line">            loss = tf.square(y_onehot - out)</span><br><span class="line">            <span class="comment"># mean: scalar 样本平均误差</span></span><br><span class="line">            loss = tf.reduce_mean(loss)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># GradientTape对象的gradient()方法自动求解参数梯度，用optimizers对象更新参数</span></span><br><span class="line">        grads = tape.gradient(loss, [w1, b1, w2, b2, w3, b3, w4, b4])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># print(grads) </span></span><br><span class="line">        <span class="comment"># w1 = w1 - lr * w1_grad</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>])</span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>])</span><br><span class="line">        w2.assign_sub(lr * grads[<span class="number">2</span>])</span><br><span class="line">        b2.assign_sub(lr * grads[<span class="number">3</span>])</span><br><span class="line">        w3.assign_sub(lr * grads[<span class="number">4</span>])</span><br><span class="line">        b3.assign_sub(lr * grads[<span class="number">5</span>])</span><br><span class="line">        w4.assign_sub(lr * grads[<span class="number">6</span>])</span><br><span class="line">        b4.assign_sub(lr * grads[<span class="number">7</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            print(epoch, step, <span class="string">'loss:'</span>, float(loss))</span><br><span class="line"></span><br><span class="line"><span class="comment">#%%</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>0.001
+0 0 loss: 0.20575971901416779
+0 100 loss: 0.1487390697002411
+0 200 loss: 0.13944916427135468
+0 300 loss: 0.1209091916680336
+0 400 loss: 0.12322018295526505
+1 0 loss: 0.111594557762146
+1 100 loss: 0.10831930488348007
+1 200 loss: 0.11048326641321182
+1 300 loss: 0.10527070611715317
+1 400 loss: 0.10876233875751495
+2 0 loss: 0.10094089806079865
+2 100 loss: 0.10149158537387848
+2 200 loss: 0.10325860977172852
+2 300 loss: 0.0998116135597229
+2 400 loss: 0.1027473658323288
+3 0 loss: 0.0957295298576355
+3 100 loss: 0.0975182056427002
+3 200 loss: 0.09860379993915558
+3 300 loss: 0.09578787535429001
+3 400 loss: 0.09834010154008865
+4 0 loss: 0.09171746671199799
+4 100 loss: 0.0942794531583786
+4 200 loss: 0.09479321539402008
+4 300 loss: 0.09240709245204926
+4 400 loss: 0.09470931440591812
+5 0 loss: 0.08833929151296616
+5 100 loss: 0.09150940924882889
+5 200 loss: 0.09153641760349274
+5 300 loss: 0.08945132791996002
+5 400 loss: 0.09160558879375458
+6 0 loss: 0.08542539179325104
+6 100 loss: 0.08909570425748825
+6 200 loss: 0.08869364112615585
+6 300 loss: 0.08685236424207687
+6 400 loss: 0.08891099691390991
+7 0 loss: 0.08285635709762573
+7 100 loss: 0.08696259558200836
+7 200 loss: 0.08618418872356415
+7 300 loss: 0.08455421030521393
+7 400 loss: 0.08655564486980438
+8 0 loss: 0.08057459443807602
+8 100 loss: 0.08505644649267197
+8 200 loss: 0.08394710719585419
+8 300 loss: 0.08246420323848724
+8 400 loss: 0.08448076248168945
+9 0 loss: 0.07851754128932953
+9 100 loss: 0.08331289887428284
+9 200 loss: 0.08193035423755646
+9 300 loss: 0.08055050671100616
+9 400 loss: 0.08261813968420029</code></pre><h1 id="汽车油耗预测实战"><a href="#汽车油耗预测实战" class="headerlink" title="汽车油耗预测实战"></a>汽车油耗预测实战</h1><h2 id="导入常用第三方库"><a href="#导入常用第三方库" class="headerlink" title="导入常用第三方库"></a>导入常用第三方库</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import, division, print_function, unicode_literals</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers, losses</span><br><span class="line"></span><br><span class="line">print(tf.__version__)</span><br><span class="line">os.environ[<span class="string">'TF_CPP_MIN_LOG_LEVEL'</span>] = <span class="string">'2'</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>2.0.0</code></pre><h2 id="下载并加载数据"><a href="#下载并加载数据" class="headerlink" title="下载并加载数据"></a>下载并加载数据</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 在线下载汽车效能数据集</span></span><br><span class="line"><span class="comment">#keras.utils.get_file("auto-mpg.data", "http://archive.ics.uci.edu/ml/machine-learning-databases/auto-mpg/auto-mpg.data")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 效能（公里数每加仑），气缸数，排量，马力，重量</span></span><br><span class="line"><span class="comment"># 加速度，型号年份，产地</span></span><br><span class="line">column_names = [<span class="string">'MPG'</span>,<span class="string">'Cylinders'</span>,<span class="string">'Displacement'</span>,<span class="string">'Horsepower'</span>,<span class="string">'Weight'</span>,</span><br><span class="line">                <span class="string">'Acceleration'</span>, <span class="string">'Model Year'</span>, <span class="string">'Origin'</span>]</span><br><span class="line"><span class="comment"># names = 列名列表,na_values = 一组用于替换NA/NaN的值。如果传参，需要制定特定列的空值</span></span><br><span class="line"><span class="comment"># comment = 标识着多余的行不被解析。如果该字符出现在行首，这一行将被全部忽略</span></span><br><span class="line"><span class="comment"># sep = 指定分隔符。如果不指定参数，则会尝试使用逗号分隔</span></span><br><span class="line"><span class="comment"># skipinitialspac = 忽略分隔符后的空白（默认为False，即不忽略）</span></span><br><span class="line">raw_dataset = pd.read_csv(<span class="string">"auto-mpg.data"</span>, names=column_names,</span><br><span class="line">                      na_values = <span class="string">"?"</span>, comment=<span class="string">'\t'</span>,</span><br><span class="line">                      sep=<span class="string">" "</span>, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 拷贝数据</span></span><br><span class="line">dataset = raw_dataset.copy()</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 查看部分数据</span></span><br><span class="line">dataset.tail()</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MPG</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model Year</th>
+      <th>Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>102</th>
+      <td>26.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>46.0</td>
+      <td>1950.0</td>
+      <td>21.0</td>
+      <td>73.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>11.0</td>
+      <td>8</td>
+      <td>400.0</td>
+      <td>150.0</td>
+      <td>4997.0</td>
+      <td>14.0</td>
+      <td>73.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>12.0</td>
+      <td>8</td>
+      <td>400.0</td>
+      <td>167.0</td>
+      <td>4906.0</td>
+      <td>12.5</td>
+      <td>73.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>13.0</td>
+      <td>8</td>
+      <td>360.0</td>
+      <td>170.0</td>
+      <td>4654.0</td>
+      <td>13.0</td>
+      <td>73.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>106</th>
+      <td>12.0</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>180.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">dataset.shape</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<pre><code>(107, 8)</code></pre><h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p>去除缺失数据</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 统计每列的空白数据,并清除所在行</span></span><br><span class="line">print(dataset.isna().sum())</span><br><span class="line">dataset = dataset.dropna()</span><br><span class="line">print(dataset.isna().sum())</span><br><span class="line">dataset.shape</span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>MPG             0
+Cylinders       0
+Displacement    0
+Horsepower      1
+Weight          1
+Acceleration    1
+Model Year      1
+Origin          1
+dtype: int64
+MPG             0
+Cylinders       0
+Displacement    0
+Horsepower      0
+Weight          0
+Acceleration    0
+Model Year      0
+Origin          0
+dtype: int64
+
+(105, 8)</code></pre><p>处理类别变量</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 处理类别型数据，其中origin列代表了类别1,2,3,分布代表产地：美国、欧洲、日本</span></span><br><span class="line"><span class="comment"># 其弹出这一列</span></span><br><span class="line">origin = dataset.pop(<span class="string">'Origin'</span>)</span><br><span class="line"><span class="comment"># 根据origin列来写入新列，共3列</span></span><br><span class="line">dataset[<span class="string">'USA'</span>] = (origin == <span class="number">1</span>)*<span class="number">1.0</span></span><br><span class="line">dataset[<span class="string">'Europe'</span>] = (origin == <span class="number">2</span>)*<span class="number">1.0</span></span><br><span class="line">dataset[<span class="string">'Japan'</span>] = (origin == <span class="number">3</span>)*<span class="number">1.0</span></span><br><span class="line">dataset.tail()</span><br></pre></td></tr></tbody></table></figure></div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MPG</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model Year</th>
+      <th>USA</th>
+      <th>Europe</th>
+      <th>Japan</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>101</th>
+      <td>23.0</td>
+      <td>6</td>
+      <td>198.0</td>
+      <td>95.0</td>
+      <td>2904.0</td>
+      <td>16.0</td>
+      <td>73.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>26.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>46.0</td>
+      <td>1950.0</td>
+      <td>21.0</td>
+      <td>73.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>11.0</td>
+      <td>8</td>
+      <td>400.0</td>
+      <td>150.0</td>
+      <td>4997.0</td>
+      <td>14.0</td>
+      <td>73.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>12.0</td>
+      <td>8</td>
+      <td>400.0</td>
+      <td>167.0</td>
+      <td>4906.0</td>
+      <td>12.5</td>
+      <td>73.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>13.0</td>
+      <td>8</td>
+      <td>360.0</td>
+      <td>170.0</td>
+      <td>4654.0</td>
+      <td>13.0</td>
+      <td>73.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h2 id="训练集和测试集数据处理"><a href="#训练集和测试集数据处理" class="headerlink" title="训练集和测试集数据处理"></a>训练集和测试集数据处理</h2><p><strong>划分数据集</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># random_state: 设定随机种子</span></span><br><span class="line">train_dataset = dataset.sample(frac=<span class="number">0.8</span>,random_state=<span class="number">0</span>)</span><br><span class="line">test_dataset = dataset.drop(train_dataset.index)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p><strong>取真实标签，同时从变量中删除</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 移动MPG油耗效能这一列为真实标签Y</span></span><br><span class="line">train_labels = train_dataset.pop(<span class="string">'MPG'</span>)</span><br><span class="line">test_labels = test_dataset.pop(<span class="string">'MPG'</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>统计分析</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">#%% 统计训练数据</span></span><br><span class="line">sns.pairplot(train_dataset[[<span class="string">"Cylinders"</span>, <span class="string">"Displacement"</span>, <span class="string">"Weight"</span>, <span class="string">"MPG"</span>]], diag_kind=<span class="string">"kde"</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p><img alt="png" data-src="https://s2.ax1x.com/2020/03/03/34AH2Q.png" src="/img/loading.gif" class="lazyload"></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 查看训练集的输入X的统计数据</span></span><br><span class="line">train_stats = train_dataset.describe()</span><br><span class="line">train_stats.pop(<span class="string">"MPG"</span>)</span><br><span class="line"><span class="comment"># 数据转置</span></span><br><span class="line">train_stats = train_stats.transpose()</span><br><span class="line">train_stats</span><br></pre></td></tr></tbody></table></figure></div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Cylinders</th>
+      <td>84.0</td>
+      <td>6.309524</td>
+      <td>1.823384</td>
+      <td>4.0</td>
+      <td>4.00</td>
+      <td>7.0</td>
+      <td>8.00</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>Displacement</th>
+      <td>84.0</td>
+      <td>254.113095</td>
+      <td>123.941746</td>
+      <td>71.0</td>
+      <td>121.00</td>
+      <td>276.0</td>
+      <td>350.25</td>
+      <td>455.0</td>
+    </tr>
+    <tr>
+      <th>Horsepower</th>
+      <td>84.0</td>
+      <td>130.095238</td>
+      <td>48.520923</td>
+      <td>46.0</td>
+      <td>88.00</td>
+      <td>121.5</td>
+      <td>167.75</td>
+      <td>225.0</td>
+    </tr>
+    <tr>
+      <th>Weight</th>
+      <td>84.0</td>
+      <td>3360.452381</td>
+      <td>1016.974694</td>
+      <td>1613.0</td>
+      <td>2374.25</td>
+      <td>3381.0</td>
+      <td>4344.25</td>
+      <td>5140.0</td>
+    </tr>
+    <tr>
+      <th>Acceleration</th>
+      <td>84.0</td>
+      <td>14.327381</td>
+      <td>2.898373</td>
+      <td>8.0</td>
+      <td>12.00</td>
+      <td>14.0</td>
+      <td>16.00</td>
+      <td>20.5</td>
+    </tr>
+    <tr>
+      <th>Model Year</th>
+      <td>84.0</td>
+      <td>71.321429</td>
+      <td>1.110310</td>
+      <td>70.0</td>
+      <td>70.00</td>
+      <td>71.0</td>
+      <td>72.00</td>
+      <td>73.0</td>
+    </tr>
+    <tr>
+      <th>USA</th>
+      <td>84.0</td>
+      <td>0.761905</td>
+      <td>0.428476</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>1.0</td>
+      <td>1.00</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Europe</th>
+      <td>84.0</td>
+      <td>0.142857</td>
+      <td>0.352029</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Japan</th>
+      <td>84.0</td>
+      <td>0.095238</td>
+      <td>0.295307</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p><strong>标准化数据</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">norm</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (x - train_stats[<span class="string">'mean'</span>]) / train_stats[<span class="string">'std'</span>]</span><br><span class="line">normed_train_data = norm(train_dataset)</span><br><span class="line">normed_test_data = norm(test_dataset)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">print(normed_train_data.shape,train_labels.shape)</span><br><span class="line">print(normed_test_data.shape, test_labels.shape)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>(84, 9) (84,)
+(21, 9) (21,)</code></pre><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">normed_train_data.head(<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model Year</th>
+      <th>USA</th>
+      <th>Europe</th>
+      <th>Japan</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>26</th>
+      <td>0.92711</td>
+      <td>0.426708</td>
+      <td>1.440714</td>
+      <td>0.998597</td>
+      <td>0.232068</td>
+      <td>-1.190144</td>
+      <td>0.55568</td>
+      <td>-0.405811</td>
+      <td>-0.322506</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p><strong>网络层定义</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(keras.Model)</span>:</span></span><br><span class="line">    <span class="comment"># 回归网络</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Network, self).__init__()</span><br><span class="line">        <span class="comment"># 创建3个全连接层</span></span><br><span class="line">        self.fc1 = layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">        self.fc2 = layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">        self.fc3 = layers.Dense(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs, training=None, mask=None)</span>:</span></span><br><span class="line">        <span class="comment"># 依次通过3个全连接层</span></span><br><span class="line">        x = self.fc1(inputs)</span><br><span class="line">        x = self.fc2(x)</span><br><span class="line">        x = self.fc3(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">model = Network()</span><br><span class="line">model.build(input_shape=(<span class="literal">None</span>, <span class="number">9</span>))</span><br><span class="line">model.summary()</span><br><span class="line"><span class="comment"># # 未训练时测试</span></span><br><span class="line"><span class="comment"># example_batch = normed_train_data[:10]</span></span><br><span class="line"><span class="comment"># example_result = model.predict(example_batch)</span></span><br><span class="line"><span class="comment"># example_result</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>Model: "network_2"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense_26 (Dense)             multiple                  640       
+_________________________________________________________________
+dense_27 (Dense)             multiple                  4160      
+_________________________________________________________________
+dense_28 (Dense)             multiple                  65        
+=================================================================
+Total params: 4,865
+Trainable params: 4,865
+Non-trainable params: 0
+_________________________________________________________________</code></pre><p>设置训练学习率、batch_size</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 设置优化器及学习率</span></span><br><span class="line">optimizer = tf.keras.optimizers.RMSprop(<span class="number">0.001</span>)</span><br><span class="line"><span class="comment"># 切分数据集，转化为dataset格式</span></span><br><span class="line">train_db = tf.data.Dataset.from_tensor_slices((normed_train_data.values, train_labels.values))</span><br><span class="line"><span class="comment"># 随机打乱</span></span><br><span class="line">train_db = train_db.shuffle(<span class="number">100</span>).batch(<span class="number">32</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># # 未训练时测试</span></span><br><span class="line"><span class="comment"># example_batch = normed_train_data[:10]</span></span><br><span class="line"><span class="comment"># example_result = model.predict(example_batch)</span></span><br><span class="line"><span class="comment"># example_result</span></span><br><span class="line"></span><br><span class="line">train_mae_losses = []</span><br><span class="line">test_mae_losses = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1过了1遍训练集中的所有样本</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">200</span>):</span><br><span class="line">    <span class="keyword">for</span> step, (x,y) <span class="keyword">in</span> enumerate(train_db): <span class="comment"># 遍历切分好的数据，total/batch_size</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">            out = model(x)</span><br><span class="line">            loss = tf.reduce_mean(losses.MSE(y, out))</span><br><span class="line">            mae_loss = tf.reduce_mean(losses.MAE(y, out)) </span><br><span class="line"></span><br><span class="line">        <span class="comment"># 每次所有样本学习完的时候   </span></span><br><span class="line">        <span class="keyword">if</span> step % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">            print(epoch, step, float(loss))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 当前误差及参数</span></span><br><span class="line">        grads = tape.gradient(loss, model.trainable_variables)</span><br><span class="line">        <span class="comment"># 更新参数</span></span><br><span class="line">        optimizer.apply_gradients(zip(grads, model.trainable_variables))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每个epoch保存一次误差</span></span><br><span class="line">    train_mae_losses.append(float(mae_loss))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 测试</span></span><br><span class="line">    <span class="comment"># 用当前参数预测</span></span><br><span class="line">    out = model(tf.constant(normed_test_data.values))</span><br><span class="line">    <span class="comment"># 平均绝对误差</span></span><br><span class="line">    test_mae_losses.append(tf.reduce_mean(losses.MAE(test_labels, out)))</span><br></pre></td></tr></tbody></table></figure></div>
+
+<pre><code>WARNING:tensorflow:Layer network_2 is casting an input tensor from dtype float64 to the layer's dtype of float32, which is new behavior in TensorFlow 2.  The layer has dtype float32 because it's dtype defaults to floatx.
+
+If you intended to run this layer in float32, you can safely ignore this warning. If in doubt, this warning is likely only an issue if you are porting a TensorFlow 1.X model to TensorFlow 2.
+
+To change all layers to have dtype float64 by default, call `tf.keras.backend.set_floatx('float64')`. To change just this layer, pass dtype='float64' to the layer constructor. If you are the author of this layer, you can disable autocasting by passing autocast=False to the base Layer constructor.
+
+0 0 364.0697937011719
+1 0 399.2882080078125
+2 0 364.7444152832031
+3 0 370.8402099609375
+4 0 368.95599365234375
+5 0 267.0185546875
+6 0 284.56927490234375
+7 0 220.3445587158203
+8 0 270.4654541015625
+9 0 290.3126525878906
+10 0 284.92547607421875
+11 0 225.69369506835938
+12 0 223.08319091796875
+13 0 185.93165588378906
+14 0 158.41250610351562
+15 0 156.68040466308594
+16 0 131.47988891601562
+17 0 136.45947265625
+18 0 120.45877838134766
+19 0 111.72221374511719
+20 0 67.24349975585938
+21 0 93.86189270019531
+22 0 61.93327713012695
+23 0 74.16808319091797
+24 0 71.35714721679688
+25 0 84.15541076660156
+26 0 41.56169891357422
+27 0 49.46928405761719
+28 0 43.893821716308594
+29 0 44.81431579589844
+30 0 53.515525817871094
+31 0 54.87225341796875
+32 0 62.51288604736328
+33 0 39.30408477783203
+34 0 41.32123947143555
+35 0 55.961673736572266
+36 0 32.836238861083984
+37 0 40.47123336791992
+38 0 30.628009796142578
+39 0 44.92280197143555
+40 0 41.996864318847656
+41 0 44.61823654174805
+42 0 48.7036018371582
+43 0 35.892486572265625
+44 0 41.20566177368164
+45 0 31.080795288085938
+46 0 34.886009216308594
+47 0 38.891319274902344
+48 0 36.23400115966797
+49 0 35.61396408081055
+50 0 41.314849853515625
+51 0 39.583438873291016
+52 0 43.64939880371094
+53 0 43.047996520996094
+54 0 45.26720428466797
+55 0 36.975624084472656
+56 0 36.90264892578125
+57 0 42.68086624145508
+58 0 44.14599609375
+59 0 34.92339324951172
+60 0 41.078216552734375
+61 0 49.27395248413086
+62 0 40.32840347290039
+63 0 42.879844665527344
+64 0 42.69921112060547
+65 0 38.92652130126953
+66 0 37.789546966552734
+67 0 34.42283248901367
+68 0 45.704673767089844
+69 0 31.573379516601562
+70 0 39.276588439941406
+71 0 38.2564582824707
+72 0 45.63722229003906
+73 0 31.552114486694336
+74 0 42.043582916259766
+75 0 37.4646110534668
+76 0 29.323150634765625
+77 0 41.898643493652344
+78 0 36.209842681884766
+79 0 30.599693298339844
+80 0 36.883087158203125
+81 0 44.1748046875
+82 0 35.358482360839844
+83 0 32.65486526489258
+84 0 41.661170959472656
+85 0 29.723812103271484
+86 0 46.884971618652344
+87 0 41.578834533691406
+88 0 40.52125549316406
+89 0 40.78559112548828
+90 0 31.211139678955078
+91 0 41.458099365234375
+92 0 34.93732833862305
+93 0 40.9779052734375
+94 0 41.95412063598633
+95 0 40.041439056396484
+96 0 36.50696563720703
+97 0 48.1165885925293
+98 0 38.826141357421875
+99 0 38.92640686035156
+100 0 37.972557067871094
+101 0 35.62773132324219
+102 0 44.01764678955078
+103 0 31.01557159423828
+104 0 44.617435455322266
+105 0 27.892345428466797
+106 0 31.867658615112305
+107 0 43.768497467041016
+108 0 46.56060028076172
+109 0 38.842124938964844
+110 0 44.05747985839844
+111 0 43.47452163696289
+112 0 35.53422546386719
+113 0 35.164188385009766
+114 0 31.300968170166016
+115 0 41.651710510253906
+116 0 34.262454986572266
+117 0 51.461944580078125
+118 0 31.520793914794922
+119 0 47.6014518737793
+120 0 38.03517150878906
+121 0 39.97100067138672
+122 0 28.371288299560547
+123 0 45.2900276184082
+124 0 38.99443054199219
+125 0 30.937030792236328
+126 0 46.492530822753906
+127 0 30.968189239501953
+128 0 29.80428123474121
+129 0 30.224945068359375
+130 0 34.32182312011719
+131 0 40.863502502441406
+132 0 38.07072448730469
+133 0 32.31753158569336
+134 0 32.75017547607422
+135 0 41.249046325683594
+136 0 46.53666687011719
+137 0 32.02732849121094
+138 0 45.60302734375
+139 0 29.584815979003906
+140 0 39.56541442871094
+141 0 44.3321533203125
+142 0 38.65762710571289
+143 0 41.381744384765625
+144 0 38.50933837890625
+145 0 40.281715393066406
+146 0 31.962413787841797
+147 0 33.09395217895508
+148 0 45.06672668457031
+149 0 36.59440231323242
+150 0 35.87657165527344
+151 0 32.514122009277344
+152 0 37.69204330444336
+153 0 35.4471321105957
+154 0 40.771121978759766
+155 0 42.812904357910156
+156 0 40.396202087402344
+157 0 32.38620376586914
+158 0 32.89350128173828
+159 0 46.11724853515625
+160 0 30.15468978881836
+161 0 36.6585807800293
+162 0 40.51753234863281
+163 0 37.86946105957031
+164 0 36.73686218261719
+165 0 37.51940155029297
+166 0 30.236446380615234
+167 0 38.2789192199707
+168 0 41.63854217529297
+169 0 33.878238677978516
+170 0 46.45884323120117
+171 0 42.423362731933594
+172 0 38.688907623291016
+173 0 43.46209716796875
+174 0 33.266754150390625
+175 0 42.00542449951172
+176 0 40.0072021484375
+177 0 39.03982162475586
+178 0 41.49565124511719
+179 0 36.55220031738281
+180 0 40.019004821777344
+181 0 30.033409118652344
+182 0 41.39886474609375
+183 0 36.794960021972656
+184 0 40.085594177246094
+185 0 43.405052185058594
+186 0 48.46874237060547
+187 0 27.88933563232422
+188 0 36.6401252746582
+189 0 42.29997253417969
+190 0 49.09864044189453
+191 0 33.455299377441406
+192 0 52.68379211425781
+193 0 34.58451843261719
+194 0 37.456119537353516
+195 0 35.60551071166992
+196 0 32.885498046875
+197 0 42.27275848388672
+198 0 32.50114822387695
+199 0 37.89646911621094</code></pre><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">plt.figure()</span><br><span class="line">plt.xlabel(<span class="string">'Epoch'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'MAE'</span>)</span><br><span class="line">plt.plot(train_mae_losses,  label=<span class="string">'Train'</span>)</span><br><span class="line">plt.plot(test_mae_losses, label=<span class="string">'Test'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line"><span class="comment"># plt.ylim([0,10])</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.savefig(<span class="string">'auto.svg'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+
+<p><img alt="png" data-src="https://s2.ax1x.com/2020/03/03/34Abvj.png" src="/img/loading.gif" class="lazyload"></p>
+<p>大约在第50个epoch之后，测试集MAE几乎保持不变，可以提前结束训练。</p>
+</body></html></div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Deep-Learning/">Deep Learning    </a><a class="post-meta__tags" href="/tags/Tensorflow/">Tensorflow    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/08/20/2020-08-20-%E8%B5%84%E9%87%91%E6%B5%81%E5%85%A5%E6%B5%81%E5%87%BA%E9%A2%84%E6%B5%8B%EF%BC%88task1%EF%BC%89/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>资金流入流出预测 01-数据探索与分析</span></div></a></div><div class="next-post pull_right"><a href="/2020/02/27/2020-02-27-unit5/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Tensorflow进阶</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/27/2020-02-27-unit5/" title="Tensorflow进阶"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-02-27</div><div class="relatedPosts_title">Tensorflow进阶</div></div></a></div><div class="relatedPosts_item"><a href="/2020/02/27/2020-02-27-unit4/" title="Tensorflow基础"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/default.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-02-27</div><div class="relatedPosts_title">Tensorflow基础</div></div></a></div></div><div class="clear_both"></div></div></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Iyin</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script id="canvas_nest" color="189,207,69" opacity="0.9" zIndex="-1" count="70" mobile="false" src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/canvas-nest.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
